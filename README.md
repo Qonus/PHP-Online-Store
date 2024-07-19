@@ -6,10 +6,10 @@ Step Academy PHP-Course examination project
 
 ```
 <VirtualHost *:80>
-    DocumentRoot "C:\xampp\htdocs\PHP-Course\StepAcademy\Classworks\cw7\store\public_html"
+    DocumentRoot "C:\xampp\htdocs\PHP-Online-Store\public_html"
     ServerName localhost
     ServerAlias localhost
-    <Directory "C:\xampp\htdocs\PHP-Course\StepAcademy\Classworks\cw7\store\public_html">
+    <Directory "C:\xampp\htdocs\PHP-Online-Store\public_html">
         Options Indexes FollowSymLinks Includes ExecCGI
         AllowOverride All
         Require all granted
