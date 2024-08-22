@@ -1,14 +1,12 @@
 <?php
 
 abstract class Controller {
-    public $model;
-    public $view;
-
-    public function __construct() {
-        $this->view = new View();
-    }
-
-    abstract function index();
+	public $model;
+	public $view;
+	
+	function __construct() {
+		$this->view = new View();
+	}
+	
+	abstract function index();
 }
-
-?>

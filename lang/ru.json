@@ -1,0 +1,82 @@
+{
+    "header": {
+        "logo": "Название магазина",
+        "navigation_menu": [
+            {
+                "id": "home",
+                "label": "Главная"
+            },
+            {
+                "id": "catalog",
+                "label": "Каталог"
+            },
+            {
+                "id": "about_us",
+                "label": "О нас"
+            },
+            {
+                "id": "contacts",
+                "label": "Контакты"
+            }
+        ],
+        "search_bar": "Поиск товаров",
+        "login_button": "Войти",
+        "register_button": "Регистрация"
+    },
+    "sidebar": {
+        "categories": [
+            "Одежда",
+            "Обувь",
+            "Аксессуары"
+        ],
+        "filters": [
+            "Цена",
+            "Бренд",
+            "Размер"
+        ]
+    },
+    "footer": {
+        "about_us": "О нас",
+        "contact_us": "Контакты",
+        "terms_and_conditions": "Условия использования",
+        "subscribe_form": "Форма подписки",
+        "social_links": [
+            "Facebook",
+            "Twitter",
+            "Instagram"
+        ]
+    },
+    "product_page": {
+        "name": "Футболка",
+        "image": "url_to_image",
+        "price": "$20",
+        "description": "Описание товара",
+        "attributes": {
+            "size": "XL",
+            "color": "Красный",
+            "material": "Хлопок"
+        },
+        "add_to_cart_button": "Добавить в корзину"
+    },
+    "cart_page": {
+        "total_price": "Итого",
+        "checkout_button": "Оформить заказ"
+    },
+    "checkout_page": {
+        "customer_info_form": {
+            "name": "Имя",
+            "address": "Адрес",
+            "email": "Электронная почта",
+            "phone": "Телефон"
+        },
+        "delivery_options": [
+            "Доставка курьером",
+            "Самовывоз"
+        ],
+        "payment_options": [
+            "Наличные",
+            "Карта"
+        ],
+        "submit_order_button": "Подтвердить заказ"
+    }
+}

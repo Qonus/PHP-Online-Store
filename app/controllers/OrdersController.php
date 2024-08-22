@@ -1,21 +1,21 @@
 <?php
 
-class HomeController extends Controller {
-    public function index() {
-        require_once __DIR__ . '/../models/ProductModel.php';
+require_once __DIR__ . '/../models/OrdersModel.php';
 
+class OrdersController extends Controller {
+    public function index() {
         try {
-            $productModel = new ProductModel();
-            $products = $productModel->getLastProducts();
+            $ordersModel = new OrdersModel();
+            $orders = $ordersModel->getAllOrders();
             
-            if ($products) {
-                $this->view->render('home/index', [
-                    'title' => 'Home',
-                    'products' => $products,
+            if ($orders) {
+                $this->view->render('orders/orders', [
+                    'title' => 'Orders',
+                    'orders' => $orders,
                 ]);
             } else {
                 // Обработка ситуации, когда продукты не найден
-                echo "Products not found.";
+                echo "Orders not found.";
             }
         } catch (Exception $e) {
             // Обработка ошибки, если произошла ошибка при поиске продукта или рендеринге шаблона
