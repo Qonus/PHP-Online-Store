@@ -2,7 +2,12 @@
 
 Step Academy PHP-Course examination project
 
-## Put the following code at the end of `C:\xampp\apache\conf\httpd.conf`
+# Instructions
+
+## Step 1: Initialization
+
+- Clone the project in `C:\xampp\htdocs`
+- Put the following code at the end of `C:\xampp\apache\conf\httpd.conf`
 
 ```
 <VirtualHost *:80>
