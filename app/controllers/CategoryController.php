@@ -4,6 +4,10 @@ require_once __DIR__ . '/../models/CategoryModel.php';
 require_once __DIR__ . '/../models/ProductModel.php';
 
 class CategoryController extends Controller {
+    public function __construct() {
+        parent::__construct();
+    }
+    
     public function index() {
         try {
             $categoryModel = new CategoryModel();

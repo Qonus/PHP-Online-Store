@@ -8,6 +8,7 @@
             <?php if (!isset($_SESSION["user"])): ?>
                 <li><a href="/login/">Login</a></li>
             <?php else: ?>
+                <li><a href="/cart/">Cart</a></li>
                 <li><a href="/logout/">Logout</a></li>
             <?php endif; ?>
         </ul>

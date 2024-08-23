@@ -1,7 +1,8 @@
 <div class="card">
     <h3>Category: <?=$category?></h3>
     <h2>Product: <?=$name?></h2>
-    <a href="/"><h2>Buy <?=$price?>$</h2></a>
+    <h2>Price <?=$price?>$</h2>
+    <a href="/cart/add/<?=$product_id?>/">Add to Cart</a>    
     <h3><?=$description?></h3>
     <div class="info">
         <p>Ages: <?=$age_range?></p>

@@ -24,6 +24,7 @@ $route->add('/', function() {
     $controller->index();
 });
 
+// CATEGORY
 $route->add('/categories/', function() {
     loadController('CategoryController');
     $controller = new CategoryController();
@@ -36,12 +37,14 @@ $route->add('/category/{category_name}/', function($category_name) {
     $controller->show($category_name);
 });
 
+// ORDERS
 $route->add('/orders/', function() {
     loadController('OrdersController');
     $controller = new OrdersController();
     $controller->index();
 });
 
+// PRODUCTS
 $route->add('/products/', function() {
     loadController('ProductController');
     $controller = new ProductController();
@@ -54,6 +57,38 @@ $route->add('/product/{id}/', function($id) {
     $controller->show($id);
 });
 
+// CART
+$route->add('/cart/', function() {
+    loadController('CartController');
+    $controller = new CartController();
+    $controller->index();
+});
+
+$route->add('/cart/add/{id}/', function($id) {
+    loadController('CartController');
+    $controller = new CartController();
+    $controller->add($id);
+});
+
+$route->add('/cart/remove/{id}/', function($id) {
+    loadController('CartController');
+    $controller = new CartController();
+    $controller->remove($id);
+});
+
+$route->add('/cart/set/{id}/{quantity}/', function($id, $quantity) {
+    loadController('CartController');
+    $controller = new CartController();
+    $controller->set($id, $quantity);
+});
+
+$route->add('/cart/clear/', function() {
+    loadController('CartController');
+    $controller = new CartController();
+    $controller->clear();
+});
+
+// USER
 $route->add('/login/', function() {
     loadController('UserController');
     $controller = new UserController();

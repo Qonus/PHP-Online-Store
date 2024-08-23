@@ -39,6 +39,7 @@ class ProductController extends Controller {
                 $this->view->render('products/individual-product-page', [
                     'title' => $item['product_name'],
                     'category' => $category,
+                    'product_id' => $item['product_id'],
                     'name' => $item['product_name'],
                     'description' => $item['description'],
                     'age_range' => $item['age_range'],
