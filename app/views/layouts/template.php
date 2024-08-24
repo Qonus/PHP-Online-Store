@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?=$title?></title>
-    <link rel="stylesheet" href="/css/global.css">
+    <?php
+    $dir = './css';
+    $files = scandir($dir);
+    foreach ($files as $file) : ?>
+        <link rel="stylesheet" href="/css/<?= $file ?>">
+    <?php endforeach; ?>
 </head>
 <body>
     <?php include __DIR__ . '/../elements/header.php'; ?>

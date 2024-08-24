@@ -1,13 +1,23 @@
 <?php
 
-class View {
+class View
+{
     protected $viewPath = __DIR__ . '/../views/';
-    
-    public function render($view, $data = []) {
-        extract($data); // Преобразуем массив в переменные
+
+    protected function getContent($path, $data)
+    {
+        extract($data);
         ob_start();
-        include $this->viewPath . $view . '.php';
+        include $path;
         $content = ob_get_clean();
-        include $this->viewPath . 'layouts/template.php'; // Главный шаблон
+        return $content;
+    }
+
+    public function render($view, $data = [])
+    {
+        $content = $this->getContent($this->viewPath . $view . '.php', $data);
+        include $this->viewPath . 'layouts/template.php';
     }
 }
+
+?>
