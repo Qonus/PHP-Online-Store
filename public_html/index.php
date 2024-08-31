@@ -133,6 +133,12 @@ $route->add('/profile/orders/', function () {
     $controller->index();
 });
 
+$route->add('/checkout/', function () {
+    loadController('OrdersController');
+    $controller = new OrdersController();
+    $controller->index();
+});
+
 // Получение URI
 $uri = $_SERVER['REQUEST_URI'];
 $route->dispatch($uri);

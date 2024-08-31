@@ -16,6 +16,7 @@ class View
     public function render($view, $data = [])
     {
         $content = $this->getContent($this->viewPath . $view . '.php', $data);
+        extract($data);
         include $this->viewPath . 'layouts/template.php';
     }
 }

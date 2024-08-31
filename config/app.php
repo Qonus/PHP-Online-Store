@@ -6,3 +6,5 @@ return [
     'log_file' => '/path/to/logfile.log',
     'base_url' => 'http://localhost',
 ];
+
+?>

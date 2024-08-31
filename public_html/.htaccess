@@ -1,16 +1,17 @@
-# Эта директива включает модуль mod_rewrite в Apache,
-# который позволяет перенаправлять URL-адреса на сервере.
 RewriteEngine On
 
-# Эта директива проверяет, не существует ли файл с указанным именем в запросе.
-# Если файл существует, правило перенаправления не будет применено (!-f).
+# Allow existing directories and files
 RewriteCond %{REQUEST_FILENAME} !-f
-# Эта директива проверяет, не существует ли папка с указанным именем в запросе.
-# Если папка существует, правило перенаправления не будет применено (!-d).
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Эта директива задает правило перенаправления.
-# В данном случае, она говорит Apache перенаправить все запросы (^(.*)$) на файл index.php.
-# [L] - флаг, означающий, что это последнее правило, которое следует применять.
-# Когда это правило выполняется, обработка файла .htaccess завершается.
+# Exclude 'css', 'js', and other asset directories from the slash rule
+# RewriteCond %{REQUEST_URI} !^/css/
+# RewriteCond %{REQUEST_URI} !^/js/
+# RewriteCond %{REQUEST_URI} !^/images/
+#
+# Redirect only if the request doesn't end with a slash
+# RewriteCond %{REQUEST_URI} !/$
+# RewriteRule ^(.*)$ /$1/ [L,R=301]
+
+# Handle all other requests with index.php
 RewriteRule ^(.*)$ index.php [L]

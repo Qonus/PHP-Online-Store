@@ -1,0 +1,15 @@
+.productspage {
+}
+
+.productspage-wrapper {
+  width: var(--wrapper-width);
+  margin: 0 auto;
+}
+
+.productpage {
+}
+
+.productpage-wrapper {
+  width: var(--wrapper-width);
+  margin: 0 auto;
+}
