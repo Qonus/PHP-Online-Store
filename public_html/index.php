@@ -128,16 +128,23 @@ $route->add('/profile/address', function () {
 
 // ORDERS
 $route->add('/profile/orders', function () {
-    loadController('OrdersController');
-    $controller = new OrdersController();
+    loadController('OrderController');
+    $controller = new OrderController();
     $controller->index();
 });
 
 $route->add('/checkout', function () {
-    loadController('OrdersController');
-    $controller = new OrdersController();
-    $controller->index();
+    loadController('OrderController');
+    $controller = new OrderController();
+    $controller->checkout();
 });
+
+$route->add('/checkout/confirm', function () {
+    loadController('OrderController');
+    $controller = new OrderController();
+    $controller->confirm();
+});
+
 
 // Получение URI
 $uri = $_SERVER['REQUEST_URI'];

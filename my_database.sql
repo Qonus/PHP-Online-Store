@@ -1,5 +1,5 @@
-CREATE DATABASE online_store;
-use online_store;
+CREATE DATABASE online_store_test;
+use online_store_test;
 
 CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -132,7 +132,61 @@ CREATE TABLE cart (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
--- Insert users
+-- FUNCTIONS
+
+DELIMITER //
+
+CREATE FUNCTION get_cart_total(id INT) RETURNS DECIMAL(10, 2)
+BEGIN
+    DECLARE total DECIMAL(10, 2);
+    
+    SELECT SUM(price * quantity) INTO total
+    FROM cart
+    JOIN products ON cart.product_id = products.product_id
+    WHERE user_id = id
+    GROUP BY user_id;
+    
+    RETURN total;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE PROCEDURE create_order(IN id INT)
+BEGIN
+ DECLARE order_id INT;
+    DECLARE total DECIMAL(10, 2);
+    -- Обработка исключения
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+     ROLLBACK;
+    END;
+    -- Начало транзакции:
+    START TRANSACTION;
+    -- Получение суммы товаров в корзине:
+    SET total = (SELECT get_cart_total(id));
+    -- Создание нового заказа:
+ INSERT INTO orders (customer_id, total_amount) VALUES (id, total);
+    -- Получение ID нового заказа:
+    SET order_id = LAST_INSERT_ID();
+    -- Перенос товаров:
+    INSERT INTO order_details (order_id, product_id, quantity, unit_price, total_price)
+    SELECT order_id, cart.product_id, cart.quantity, products.price, (cart.quantity * products.price)
+    FROM cart
+    JOIN products ON cart.product_id = products.product_id
+    WHERE cart.user_id = id;
+    -- Очистка корзины этого пользователя:
+    DELETE FROM cart WHERE user_id = id;
+    -- Завершение транзакции:
+    COMMIT;
+END //
+
+DELIMITER ;
+
+
+-- INSERTS
+
 INSERT INTO users (user_type, first_name, last_name, email, phone, password, salt)
 VALUES 
 ('Administrator', 'Admin', 'User', 'admin@onlinestore.com', '1234567890', 'hashedpassword', 'somesalt'),
@@ -140,25 +194,20 @@ VALUES
 ('Customer', 'Jane', 'Doe', 'janedoe@example.com', '1112223333', 'hashedpassword', 'somesalt'),
 ('Manager', 'James', 'Smith', 'jamessmith@example.com', '4445556666', 'hashedpassword', 'somesalt');
 
--- Insert customers
 INSERT INTO customers (user_id) VALUES (2), (3);
 
--- Insert addresses
 INSERT INTO addresses (address_label, customer_id, address_line1, city, state, postal_code, country)
 VALUES 
 ('Home', 2, '123 Elm Street', 'Springfield', 'IL', '62704', 'USA'),
 ('Work', 3, '456 Oak Street', 'Springfield', 'IL', '62701', 'USA');
 
--- Update customers with default address
 UPDATE customers SET default_address_id = 1 WHERE user_id = 2;
 UPDATE customers SET default_address_id = 2 WHERE user_id = 3;
 
--- Insert managers
 INSERT INTO managers (user_id, iin, birthday)
 VALUES 
 (4, '123456789012', '1980-01-01');
 
--- Insert brands
 INSERT INTO brands (brand_name)
 VALUES 
 ('Hasbro'),
@@ -166,7 +215,6 @@ VALUES
 ('Lego'),
 ('Funko');
 
--- Insert categories
 INSERT INTO categories (category_name, parent_category_id)
 VALUES 
 ('Board Games', NULL),
@@ -178,7 +226,6 @@ VALUES
 ('Children Games', 1),
 ('Classic Games', 1);
 
--- Insert products
 INSERT INTO products (product_name, description, brand_id, category_id, price, stock_quantity, age_range, player_number, weight, dimensions, release_date)
 VALUES 
 ('Monopoly', 'Classic board game for property trading.', 1, 7, 19.99, 100, '8+', '2-6 players', 2.5, '10x10x2 inches', '1935-01-01'),
@@ -203,10 +250,8 @@ VALUES
 ('Magic: The Gathering', 'Collectible card game.', 3, 2, 19.99, 130, '13+', '2+ players', 1.0, '4x3x2 inches', '1993-08-05'),
 ('Pokemon TCG', 'Collectible card game based on the Pokémon franchise.', 2, 2, 24.99, 110, '6+', '2+ players', 1.0, '5x4x3 inches', '1996-10-20');
 
--- Insert orders
 INSERT INTO orders (customer_id, total_amount) VALUES (2, 49.97), (3, 24.99);
 
--- Insert order details
 INSERT INTO order_details (order_id, product_id, quantity, unit_price, total_price)
 VALUES 
 (1, 1, 1, 19.99, 19.99),
@@ -214,7 +259,6 @@ VALUES
 (2, 3, 1, 9.99, 9.99),
 (2, 4, 1, 14.99, 14.99);
 
--- Insert product photos
 INSERT INTO product_photos (product_id, image_url, is_primary)
 VALUES 
 (1, 'monopoly.jpg', TRUE),
@@ -222,13 +266,11 @@ VALUES
 (3, 'uno.jpg', TRUE),
 (4, 'jenga.jpg', TRUE);
 
--- Insert discounts
 INSERT INTO discounts (discount_code, discount_type, discount_value, start_date, end_date, min_purchase_amount)
 VALUES 
 ('SAVE10', 'Percentage', 10.00, '2024-08-01 00:00:00', '2024-08-31 23:59:59', 50.00),
 ('WELCOME5', 'Fixed Amount', 5.00, '2024-08-01 00:00:00', '2024-12-31 23:59:59', 20.00);
 
--- Insert delivery methods
 INSERT INTO delivery_methods (method_name, price, estimated_delivery_time)
 VALUES 
 ('Standard Shipping', 5.99, '5-7 business days'),

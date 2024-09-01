@@ -1,13 +1,16 @@
 <?php
 
-class CartController extends Controller {
-    public function __construct() {
+class CartController extends Controller
+{
+    public function __construct()
+    {
         parent::__construct();
         require_once __DIR__ . '/../models/CartModel.php';
         $this->model = new CartModel();
     }
 
-    public function index() {
+    public function index()
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: /login/");
             return;
@@ -23,7 +26,8 @@ class CartController extends Controller {
         }
     }
 
-    public function add($id) {
+    public function add($id)
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: /login/");
             return;
@@ -36,7 +40,8 @@ class CartController extends Controller {
         }
     }
 
-    public function remove($id) {
+    public function remove($id)
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: /login/");
             return;
@@ -49,7 +54,8 @@ class CartController extends Controller {
         }
     }
 
-    public function set($id, $quantity) {
+    public function set($id, $quantity)
+    {
         if (!isset($_SESSION['user'])) {
             header("Location: /login/");
             return;

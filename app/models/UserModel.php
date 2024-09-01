@@ -14,16 +14,6 @@ class UserModel extends Model
         return (array) $this->db->getRow($sql, $args);
     }
 
-    public function getUser($data): ?array
-    {
-        $sql = "SELECT * FROM users WHERE email LIKE :email AND password = :password";
-        $args = [
-            ":email" => $email,
-            ":password" => $password
-        ];
-        return (array) $this->db->getRow($sql, $args) ?: null;
-    }
-
     public function authUser($email, $password): ?array
     {
         $sql = "SELECT * FROM users WHERE email LIKE :email AND password = :password";
@@ -44,7 +34,15 @@ class UserModel extends Model
             return 0;
         }
         $sql = "INSERT INTO users (user_type, first_name, last_name, email, phone, password) VALUES (:user_type, :first_name, :last_name, :email, :phone, :password)";
-        return $this->db->insert($sql, $data);
+        $result = $this->db->insert($sql, $data);
+        if ($data['user_type'] == 'Customer') {
+            $sql = "INSERT INTO customers (user_id) VALUES (:user_id)";
+            $args = [
+                ":user_id" => $result
+            ];
+            $this->db->insert($sql, $args);
+        }
+        return $result;
     }
 
     public function getAllUsers()
