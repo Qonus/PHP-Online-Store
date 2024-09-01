@@ -12,7 +12,7 @@
     $files = scandir($dir);
     foreach ($files as $file):
         if (pathinfo($file, PATHINFO_EXTENSION) === 'css'): ?>
-            <link rel="stylesheet" href="http://localhost/css/<?= $file ?>">
+            <link rel="stylesheet" href="/css/<?= $file ?>">
         <?php endif;
     endforeach; ?>
 </head>

@@ -26,114 +26,114 @@ $route->add('/', function () {
 });
 
 // CATEGORY
-$route->add('/categories/', function () {
+$route->add('/categories', function () {
     loadController('CategoryController');
     $controller = new CategoryController();
     $controller->index();
 });
 
-$route->add('/category/{category_name}/', function ($category_name) {
+$route->add('/category/{category_name}', function ($category_name) {
     loadController('CategoryController');
     $controller = new CategoryController();
     $controller->show($category_name);
 });
 
 // PRODUCTS
-$route->add('/products/', function () {
+$route->add('/products', function () {
     loadController('ProductController');
     $controller = new ProductController();
     $controller->index();
 });
 
-$route->add('/product/{id}/', function ($id) {
+$route->add('/product/{id}', function ($id) {
     loadController('ProductController');
     $controller = new ProductController();
     $controller->show($id);
 });
 
 // CART
-$route->add('/cart/', function () {
+$route->add('/cart', function () {
     loadController('CartController');
     $controller = new CartController();
     $controller->index();
 });
 
-$route->add('/cart/add/{id}/', function ($id) {
+$route->add('/cart/add/{id}', function ($id) {
     loadController('CartController');
     $controller = new CartController();
     $controller->add($id);
 });
 
-$route->add('/cart/remove/{id}/', function ($id) {
+$route->add('/cart/remove/{id}', function ($id) {
     loadController('CartController');
     $controller = new CartController();
     $controller->remove($id);
 });
 
-$route->add('/cart/set/{id}/{quantity}/', function ($id, $quantity) {
+$route->add('/cart/set/{id}/{quantity}', function ($id, $quantity) {
     loadController('CartController');
     $controller = new CartController();
     $controller->set($id, $quantity);
 });
 
-$route->add('/cart/clear/', function () {
+$route->add('/cart/clear', function () {
     loadController('CartController');
     $controller = new CartController();
     $controller->clear();
 });
 
 // USER
-$route->add('/login/', function () {
+$route->add('/login', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->login();
 });
 
-$route->add('/register/', function () {
+$route->add('/register', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->register();
 });
 
-$route->add('/logout/', function () {
+$route->add('/logout', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->logout();
 });
 
 // PROFILE
-$route->add('/profile/', function () {
+$route->add('/profile', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->index();
 });
 
-$route->add('/profile/settings/', function () {
+$route->add('/profile/settings', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->settings();
 });
 
-$route->add('/profile/privacy/', function () {
+$route->add('/profile/privacy', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->privacy();
 });
 
-$route->add('/profile/address/', function () {
+$route->add('/profile/address', function () {
     loadController('UserController');
     $controller = new UserController();
     $controller->address();
 });
 
 // ORDERS
-$route->add('/profile/orders/', function () {
+$route->add('/profile/orders', function () {
     loadController('OrdersController');
     $controller = new OrdersController();
     $controller->index();
 });
 
-$route->add('/checkout/', function () {
+$route->add('/checkout', function () {
     loadController('OrdersController');
     $controller = new OrdersController();
     $controller->index();
