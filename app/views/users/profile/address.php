@@ -1,1 +1,1 @@
-<h2> Adderesses </h2>
+<h2>You don't have any addresses yet</h2>

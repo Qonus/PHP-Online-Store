@@ -53,8 +53,12 @@ class OrderController extends UserController
 
     public function index()
     {
+        if (!isset($_SESSION['user'])) {
+            header("Location: /login");
+            return;
+        }
         try {
-            $orders = $this->model->getAllOrders();
+            $orders = $this->model->getAllByUserIdOrders($_SESSION['user']['user_id']);
 
             if ($orders) {
                 $this->profileView->render('orders', [
@@ -62,7 +66,9 @@ class OrderController extends UserController
                     'orders' => $orders,
                 ]);
             } else {
-                echo "Orders not found.";
+                $this->profileView->render('orders', [
+                    'title' => 'Orders',
+                ]);
             }
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();

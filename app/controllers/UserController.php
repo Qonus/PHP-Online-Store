@@ -76,28 +76,70 @@ class UserController extends Controller
             header("Location: /login/");
             return;
         }
-        // if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        //     $first_name = $_POST["first_name"];
-        //     $last_name = $_POST["last_name"];
-        //     $result = $this->model->updateUser($_SESSION['user']['user_id'], [
-        //         'first_name' => $first_name,
-        //         'last_name' => $last_name,
-        //     ]);
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            if (isset($_POST["change_password"])) {
+                $old_password = $_POST["old_password"];
+                $new_password = $_POST["new_password"];
+                $confirm_new_password = $_POST["confirm_new_password"];
+                if ($old_password != $_SESSION["user"]["password"]) {
+                    $this->profileView->render('privacy', [
+                        'title' => 'Privacy settings',
+                        'email' => $_SESSION['user']['email'],
+                        'error' => 'Invalid old password',
+                    ]);
+                    return;
+                } else if ($new_password != $confirm_new_password) {
+                    $this->profileView->render('privacy', [
+                        'title' => 'Privacy settings',
+                        'email' => $_SESSION['user']['email'],
+                        'error' => "Confirm password doesn't match with new password",
+                    ]);
+                    return;
+                }
 
-        //     if ($result) {
-        //         $_SESSION['user'] = $result;
-        //         $this->profileView->render('settings', [
-        //             'title' => 'Edit Profile',
-        //             'message' => "Success, data saved",
-        //         ]);
-        //     } else {
-        //         $this->profileView->render('settings', [
-        //             'title' => 'Edit Profile',
-        //             'error' => 'Error, try again later',
-        //         ]);
-        //     }
-        //     return;
-        // }
+                $result = $this->model->updateUser($_SESSION['user']['user_id'], [
+                    'password' => $new_password,
+                ]);
+
+                if ($result) {
+                    $_SESSION['user'] = $result;
+                    $this->profileView->render('privacy', [
+                        'title' => 'Privacy settings',
+                        'email' => $_SESSION['user']['email'],
+                        'message' => "Success, password is set",
+                    ]);
+                } else {
+                    $this->profileView->render('privacy', [
+                        'title' => 'Privacy settings',
+                        'email' => $_SESSION['user']['email'],
+                        'error' => 'Error, try again later',
+                    ]);
+                }
+                return;
+            } else if (isset($_POST["change_email"])) {
+                $email = $_POST["email"];
+
+                $result = $this->model->updateUser($_SESSION['user']['user_id'], [
+                    'email' => $email,
+                ]);
+
+                if ($result) {
+                    $_SESSION['user'] = $result;
+                    $this->profileView->render('privacy', [
+                        'title' => 'Privacy settings',
+                        'email' => $_SESSION['user']['email'],
+                        'message' => "Success, email is set",
+                    ]);
+                } else {
+                    $this->profileView->render('privacy', [
+                        'title' => 'Privacy settings',
+                        'email' => $_SESSION['user']['email'],
+                        'error' => 'Error, try again later',
+                    ]);
+                }
+                return;
+            }
+        }
 
         $this->profileView->render('privacy', [
             'title' => 'Profile Privacy',

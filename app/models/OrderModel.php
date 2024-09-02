@@ -5,18 +5,28 @@ class OrderModel extends Model
     protected $db;
     protected $table = "orders";
 
-    public function getOrderById($orderId)
+    public function getOrderById($order_id)
     {
         $sql = "SELECT * FROM orders WHERE order_id = :order_id";
         $args = [
-            ":order_id" => $orderId
+            ":order_id" => $order_id
         ];
         return (array) $this->db->getRow($sql, $args);
     }
 
+    public function getAllByUserIdOrders($user_id)
+    {
+        $sql = "SELECT * FROM orders WHERE customer_id = :user_id";
+        $args = [
+            ":user_id" => $user_id
+        ];
+        return $this->db->getAll($sql, $args);
+    }
+
     public function getAllOrders()
     {
-        return $this->db->getAll("SELECT * FROM orders");
+        $sql = "SELECT * FROM orders";
+        return $this->db->getAll($sql);
     }
 
     public function createOrder($user_id)
@@ -29,11 +39,11 @@ class OrderModel extends Model
         return 1;
     }
 
-    public function deleteOrder($orderId)
+    public function deleteOrder($order_id)
     {
         $sql = "DELETE FROM orders WHERE order_id = :order_id";
         $args = [
-            ":order_id" => $orderId
+            ":order_id" => $order_id
         ];
         return $this->db->rowCount($sql, $args);
     }
