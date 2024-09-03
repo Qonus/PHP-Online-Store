@@ -28,6 +28,11 @@ Project was made as a Step Academy PHP-Course examination project
 </VirtualHost>
 ```
 
-## Step 2: Running
+## Step 2: Database
+
+- Start MySQL service in XAMPP and click admin to open phpMyAdmin
+- Run [`this`](https://github.com/Qonus/PHP-Online-Store/blob/main/my_database.sql) sql query in phpMyAdmin
+
+## Step 3: Running
 
 - Start apache server in XAMPP
