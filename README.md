@@ -8,12 +8,12 @@ Project was made as a Step Academy PHP-Course examination project
 
 ## Prerequisites
 
-- Install XAMPP
+1. Install XAMPP
 
 ## Step 1: Initialization
 
-- Clone the project in `C:\xampp\htdocs`
-- Put the following code at the end of `C:\xampp\apache\conf\httpd.conf`
+1. Clone the project in `C:\xampp\htdocs`
+2. Put the following code at the end of `C:\xampp\apache\conf\httpd.conf`
 
 ```
 <VirtualHost *:80>
@@ -30,9 +30,9 @@ Project was made as a Step Academy PHP-Course examination project
 
 ## Step 2: Database
 
-- Start MySQL service in XAMPP and click admin to open phpMyAdmin
-- Run [`this`](https://github.com/Qonus/PHP-Online-Store/blob/main/my_database.sql) sql query in phpMyAdmin
+1. Start MySQL service in XAMPP and click admin to open phpMyAdmin
+2. Run [`this`](https://github.com/Qonus/PHP-Online-Store/blob/main/my_database.sql) sql query in phpMyAdmin
 
 ## Step 3: Running
 
-- Start apache server in XAMPP
+1. Start apache server in XAMPP and click admin
