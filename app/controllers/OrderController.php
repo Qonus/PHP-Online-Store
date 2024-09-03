@@ -21,13 +21,13 @@ class OrderController extends UserController
             // $payment_method = $_POST["payment_method"];
             // $address = $_POST["address"];
             $this->model->createOrder($_SESSION['user']['user_id']);
-            header("Location: /checkout/confirm");
+            header("Location: /order/confirm");
             return;
             // if ($order_id) {
             //     //$_SESSION['order'] = $this->model->getOrderById($order_id);
             // }
         }
-        $this->view->render('checkout/index', [
+        $this->view->render('order/index', [
             'title' => 'Checkout',
         ]);
     }
@@ -44,7 +44,7 @@ class OrderController extends UserController
         // }
         //$order = $_SESSION['order'];
         //$_SESSION['order'] = null;
-        $this->view->render('checkout/confirm', [
+        $this->view->render('order/confirm', [
             'title' => 'Checkout confimation',
             //'order_id' => $order['order_id'],
             //'total_amout' => $order['total_amount']
@@ -73,5 +73,26 @@ class OrderController extends UserController
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    public function orderDetails($order_id)
+    {
+        if (!isset($_SESSION['user'])) {
+            header("Location: /login");
+            return;
+        }
+        $order = $this->model->getOrderById($order_id);
+        if ($_SESSION['user']['user_id'] != $order['customer_id']) {
+            $this->view->render('order/order_details', [
+                'title' => 'Order Details',
+                'error' => "Order with number $order_id not found in your order list",
+            ]);
+            return;
+        }
+
+        $this->view->render('order/order_details', [
+            'title' => 'Order Details',
+            'order' => $order,
+        ]);
     }
 }
