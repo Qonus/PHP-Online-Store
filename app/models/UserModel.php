@@ -67,10 +67,44 @@ class UserModel extends Model
         return (array) $this->db->getAll($sql, [$id]) ?: null;
     }
 
+
+    // ADDRESS
+    public function getAddressById($address_id)
+    {
+        $sql = "SELECT * FROM addresses WHERE address_id = :address_id";
+        $args = [
+            ":address_id" => $address_id
+        ];
+        return (array) $this->db->getRow($sql, $args);
+    }
+
     public function addAddress($data)
     {
         $sql = "INSERT INTO addresses (address_label, customer_id, address_line1, address_line2, city, state, postal_code, country, address_comment) VALUES (:address_label, :customer_id, :address_line1, :address_line2, :city, :state, :postal_code, :country, :address_comment)";
         return $this->db->insert($sql, $data);
+    }
+
+    public function removeAddress($address_id)
+    {
+        $args = [
+            ":address_id" => $address_id
+        ];
+        $sql = "UPDATE customers SET default_address_id = NULL WHERE default_address_id = :address_id";
+        $this->db->execute($sql, $args);
+        $sql = "DELETE FROM addresses WHERE address_id = :address_id";
+        return $this->db->execute($sql, $args);
+    }
+
+    public function updateAddress($address_id, $data)
+    {
+        foreach ($data as $key => $value) {
+            $args = [];
+            $args[":$key"] = $value;
+            $sql = "UPDATE addresses SET $key = :$key WHERE address_id = :address_id";
+            $args[':address_id'] = $address_id;
+            $this->db->rowCount($sql, $args);
+        }
+        return $this->getAddressById($address_id);
     }
 }
 

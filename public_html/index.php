@@ -126,6 +126,18 @@ $route->add('/profile/address', function () {
     $controller->address();
 });
 
+$route->add('/profile/address/remove/{address_id}', function ($address_id) {
+    loadController('UserController');
+    $controller = new UserController();
+    $controller->removeAddress($address_id);
+});
+
+$route->add('/profile/address/edit/{address_id}', function ($address_id) {
+    loadController('UserController');
+    $controller = new UserController();
+    $controller->editAddress($address_id);
+});
+
 // ORDERS
 $route->add('/profile/orders', function () {
     loadController('OrderController');

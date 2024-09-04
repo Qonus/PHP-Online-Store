@@ -1,4 +1,4 @@
-<h2>Добавить адрес</h2>
+<h2>Add Address:</h2>
 <form method="post">
     <input placeholder="Address name (home, work, ect)" name="address_label" type="text"><br>
     <input placeholder="Address line 1" name="address_line1" type="text"><br>
@@ -35,7 +35,7 @@
                     <?= $item["address_comment"] ?>
                 </td>
                 <td><a href="/profile/address/remove/<?= $item["address_id"] ?>">Remove</a> | <a
-                        href="/profile/address/Edit/<?= $item["address_id"] ?>">Edit</a></td>
+                        href="/profile/address/edit/<?= $item["address_id"] ?>">Edit</a></td>
             </tr>
         <?php endforeach; ?>
     </table>

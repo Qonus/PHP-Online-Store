@@ -180,16 +180,60 @@ class UserController extends Controller
         }
 
         $addresses = $this->model->getCustomerAddresses($_SESSION["user"]["user_id"]);
-        $this->profileView->render('address', [
+        $this->profileView->render('address/index', [
             'title' => 'Address',
             'addresses' => $addresses,
         ]);
     }
 
-    public function removeAddress()
+    public function removeAddress($address_id)
     {
         self::checkAuth();
+        $address = $this->model->getAddressById($address_id);
+        if ($_SESSION['user']['user_id'] != $address['customer_id']) {
+            header('Location: /profile/address');
+            return;
+        }
 
+        $this->model->removeAddress($address_id);
+        header('Location: /profile/address');
+    }
+
+    public function editAddress($address_id)
+    {
+        self::checkAuth();
+        $address = $this->model->getAddressById($address_id);
+        if ($_SERVER['REQUEST_METHOD'] == "POST") {
+            $result = $this->model->updateAddress($address_id, [
+                'address_label' => $_POST['address_label'],
+                'address_line1' => $_POST['address_line1'],
+                'address_line2' => $_POST['address_line2'],
+                'city' => $_POST['city'],
+                'state' => $_POST['state'],
+                'postal_code' => $_POST['postal_code'],
+                'country' => $_POST['country'],
+                'address_comment' => $_POST['address_comment'],
+            ]);
+            if ($result) {
+                $address = $this->model->getAddressById($address_id);
+                $this->profileView->render('address/edit', [
+                    'title' => 'Edit Address',
+                    'address' => $address,
+                    'message' => 'Success, address updated.'
+                ]);
+            } else {
+                $this->profileView->render('address/edit', [
+                    'title' => 'Edit Address',
+                    'address' => $address,
+                    'error' => 'Error, try again.'
+                ]);
+            }
+            return;
+        }
+        $this->profileView->render('address/edit', [
+            'title' => 'Edit Address',
+            'address' => $address,
+        ]);
     }
 
     // AUTH
