@@ -4,6 +4,14 @@ class CartModel extends Model
 {
     protected $db;
     protected $table = "cart";
+    protected $productModel;
+
+    public function __construct()
+    {
+        parent::__construct();
+        require_once __DIR__ . "/ProductModel.php";
+        $this->productModel = new ProductModel();
+    }
 
     public function getCart($userId): ?array
     {
@@ -32,10 +40,17 @@ class CartModel extends Model
             ":p" => $productId,
         ];
         $isInCart = $this->db->rowCount($sql, $args) > 0;
+        $product = $this->productModel->getProductById($productId);
         if ($isInCart) {
-            $quantity += $this->getCartProduct($userId, $productId)['quantity'];
+            $quantity += $this->getCartProduct($userId, $productId)["quantity"];
+            if ($quantity > $product['stock_quantity']) {
+                return false;
+            }
             return $this->updateQuantity($userId, $productId, $quantity);
         } else {
+            if ($quantity > $product['stock_quantity']) {
+                return false;
+            }
             $sql = "INSERT INTO cart (user_id, product_id, quantity) VALUES (:u, :p, :q)";
             $args = [
                 ":u" => $userId,
@@ -59,9 +74,10 @@ class CartModel extends Model
 
     public function updateQuantity($userId, $productId, $quantity): bool
     {
+        $product = $this->productModel->getProductById($productId);
         if ($quantity < 1) {
             return $this->removeFromCart($userId, $productId);
-        } else {
+        } else if ($quantity <= $product['stock_quantity']) {
             $sql = "UPDATE cart SET quantity = :q WHERE user_id = :u AND product_id = :p";
             $args = [
                 ":q" => $quantity,
@@ -70,6 +86,7 @@ class CartModel extends Model
             ];
             return $this->db->execute($sql, $args);
         }
+        return false;
     }
 
     public function clearCart($userId): bool

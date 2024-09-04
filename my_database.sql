@@ -162,23 +162,27 @@ BEGIN
     BEGIN
      ROLLBACK;
     END;
-    -- Начало транзакции:
+
     START TRANSACTION;
-    -- Получение суммы товаров в корзине:
+
     SET total = (SELECT get_cart_total(id));
-    -- Создание нового заказа:
- INSERT INTO orders (customer_id, total_amount) VALUES (id, total);
-    -- Получение ID нового заказа:
+
+    INSERT INTO orders (customer_id, total_amount) VALUES (id, total);
     SET order_id = LAST_INSERT_ID();
-    -- Перенос товаров:
+
     INSERT INTO order_details (order_id, product_id, quantity, unit_price, total_price)
     SELECT order_id, cart.product_id, cart.quantity, products.price, (cart.quantity * products.price)
     FROM cart
     JOIN products ON cart.product_id = products.product_id
     WHERE cart.user_id = id;
-    -- Очистка корзины этого пользователя:
+
+    UPDATE products 
+    JOIN cart ON products.product_id = cart.product_id
+    SET products.stock_quantity = products.stock_quantity - cart.quantity
+    WHERE cart.user_id = id;
+
     DELETE FROM cart WHERE user_id = id;
-    -- Завершение транзакции:
+
     COMMIT;
 END //
 
