@@ -202,7 +202,13 @@ class UserController extends Controller
     public function editAddress($address_id)
     {
         self::checkAuth();
+
         $address = $this->model->getAddressById($address_id);
+        if ($_SESSION['user']['user_id'] != $address['customer_id']) {
+            header('Location: /profile/address');
+            return;
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $result = $this->model->updateAddress($address_id, [
                 'address_label' => $_POST['address_label'],
