@@ -13,13 +13,32 @@ class UserController extends Controller
         $this->model = new UserModel;
     }
 
+    static function checkAuth()
+    {
+        require_once __DIR__ . '/../models/UserModel.php';
+        $model = new UserModel;
+        if (!isset($_SESSION["user"])) {
+            header("HTTP/1.1 401 Unauthorized");
+            header("Location: /login/");
+            return;
+        } else {
+            $user = $_SESSION["user"];
+            $user = $model->getCustomerById($user["user_id"]);
+            if (!$user) {
+                unset($_SESSION["user"]);
+                header("HTTP/1.1 401 Unauthorized");
+                header("Location: /login/");
+                return;
+            }
+        }
+    }
+
+
     // PROFILE
     public function index()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login/");
-            return;
-        }
+        self::checkAuth();
+
         $this->profileView->render('profile', [
             'title' => 'Profile',
             'first_name' => $_SESSION['user']['first_name'],
@@ -32,10 +51,7 @@ class UserController extends Controller
     }
     public function settings()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login/");
-            return;
-        }
+        self::checkAuth();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $first_name = $_POST["first_name"];
@@ -72,10 +88,8 @@ class UserController extends Controller
     }
     public function privacy()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login/");
-            return;
-        }
+        self::checkAuth();
+
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             if (isset($_POST["change_password"])) {
                 $old_password = $_POST["old_password"];
@@ -148,19 +162,34 @@ class UserController extends Controller
     }
     public function address()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login/");
-            return;
+        self::checkAuth();
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $data = [
+                ':customer_id' => $_SESSION['user']['user_id'],
+                ':address_label' => $_POST['address_label'],
+                ':address_line1' => $_POST['address_line1'],
+                ':address_line2' => $_POST['address_line2'],
+                ':city' => $_POST['city'],
+                ':state' => $_POST['state'],
+                ':postal_code' => $_POST['postal_code'],
+                ':country' => $_POST['country'],
+                ':address_comment' => $_POST['address_comment'],
+            ];
+            $this->model->addAddress($data);
         }
+
+        $addresses = $this->model->getCustomerAddresses($_SESSION["user"]["user_id"]);
         $this->profileView->render('address', [
-            'title' => 'Profile',
-            'first_name' => $_SESSION['user']['first_name'],
-            'last_name' => $_SESSION['user']['last_name'],
-            'email' => $_SESSION['user']['email'],
-            'phone' => $_SESSION['user']['phone'],
-            'created_at' => $_SESSION['user']['created_at'],
-            'updated_at' => $_SESSION['user']['updated_at'],
+            'title' => 'Address',
+            'addresses' => $addresses,
         ]);
+    }
+
+    public function removeAddress()
+    {
+        self::checkAuth();
+
     }
 
     // AUTH

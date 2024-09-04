@@ -15,7 +15,9 @@
                     $item = (array) $item; ?>
                     <tr>
                         <td>
-                            <?= $item["product_name"] ?>
+                            <a href="/product/<?= $item['product_id'] ?>">
+                                <?= $item["product_name"] ?>
+                            </a>
                         </td>
                         <td>
                             <?= $item["price"] ?>

@@ -23,6 +23,15 @@ class OrderModel extends Model
         return $this->db->getAll($sql, $args);
     }
 
+    public function getAllOrderDetails($order_id)
+    {
+        $sql = "SELECT p.product_id, p.product_name, od.quantity, od.unit_price, od.total_price FROM order_details od JOIN products p ON od.product_id = p.product_id WHERE od.order_id = :order_id";
+        $args = [
+            ":order_id" => $order_id
+        ];
+        return $this->db->getAll($sql, $args);
+    }
+
     public function getAllOrders()
     {
         $sql = "SELECT * FROM orders";

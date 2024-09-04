@@ -133,6 +133,12 @@ $route->add('/profile/orders', function () {
     $controller->index();
 });
 
+$route->add('/profile/orders/{order}', function ($order) {
+    loadController('OrderController');
+    $controller = new OrderController();
+    $controller->orderDetails($order);
+});
+
 $route->add('/checkout', function () {
     loadController('OrderController');
     $controller = new OrderController();

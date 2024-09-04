@@ -35,13 +35,6 @@ class UserModel extends Model
         }
         $sql = "INSERT INTO users (user_type, first_name, last_name, email, phone, password) VALUES (:user_type, :first_name, :last_name, :email, :phone, :password)";
         $result = $this->db->insert($sql, $data);
-        if ($data['user_type'] == 'Customer') {
-            $sql = "INSERT INTO customers (user_id) VALUES (:user_id)";
-            $args = [
-                ":user_id" => $result
-            ];
-            $this->db->insert($sql, $args);
-        }
         return $result;
     }
 
@@ -60,6 +53,24 @@ class UserModel extends Model
             $this->db->rowCount($sql, $args);
         }
         return $this->getUserById($userId);
+    }
+
+    public function getCustomerById($id): ?array
+    {
+        $sql = "SELECT * FROM users JOIN customers ON users.user_id = customers.user_id WHERE users.user_id = ?";
+        return (array) $this->db->getRow($sql, [$id]) ?: null;
+    }
+
+    public function getCustomerAddresses($id): ?array
+    {
+        $sql = "SELECT * FROM addresses WHERE customer_id = ?";
+        return (array) $this->db->getAll($sql, [$id]) ?: null;
+    }
+
+    public function addAddress($data)
+    {
+        $sql = "INSERT INTO addresses (address_label, customer_id, address_line1, address_line2, city, state, postal_code, country, address_comment) VALUES (:address_label, :customer_id, :address_line1, :address_line2, :city, :state, :postal_code, :country, :address_comment)";
+        return $this->db->insert($sql, $data);
     }
 }
 

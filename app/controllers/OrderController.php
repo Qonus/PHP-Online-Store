@@ -12,10 +12,7 @@ class OrderController extends UserController
 
     public function checkout()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login/");
-            return;
-        }
+        UserController::checkAuth();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // $payment_method = $_POST["payment_method"];
@@ -27,24 +24,22 @@ class OrderController extends UserController
             //     //$_SESSION['order'] = $this->model->getOrderById($order_id);
             // }
         }
-        $this->view->render('checkout/index', [
+        $this->view->render('order/index', [
             'title' => 'Checkout',
         ]);
     }
 
     public function confirm()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login");
-            return;
-        }
+        UserController::checkAuth();
+
         // if (!isset($_SESSION['order'])) {
         //     header("Location: /checkout");
         //     return;
         // }
         //$order = $_SESSION['order'];
         //$_SESSION['order'] = null;
-        $this->view->render('checkout/confirm', [
+        $this->view->render('order/confirm', [
             'title' => 'Checkout confimation',
             //'order_id' => $order['order_id'],
             //'total_amout' => $order['total_amount']
@@ -53,10 +48,8 @@ class OrderController extends UserController
 
     public function index()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login");
-            return;
-        }
+        UserController::checkAuth();
+
         try {
             $orders = $this->model->getAllByUserIdOrders($_SESSION['user']['user_id']);
 
@@ -73,5 +66,23 @@ class OrderController extends UserController
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
         }
+    }
+
+    public function orderDetails($order_id)
+    {
+        UserController::checkAuth();
+
+        $order = $this->model->getOrderById($order_id);
+        if ($_SESSION['user']['user_id'] != $order['customer_id']) {
+            header("Location: /profile/orders");
+            return;
+        }
+        $order_details = $this->model->getAllOrderDetails($order_id);
+
+        $this->view->render('order/order_details', [
+            'title' => 'Order Details',
+            'order' => $order,
+            'order_details' => $order_details,
+        ]);
     }
 }
