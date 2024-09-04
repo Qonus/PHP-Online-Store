@@ -184,6 +184,20 @@ END //
 
 DELIMITER ;
 
+DELIMITER //
+
+CREATE TRIGGER create_customer
+AFTER INSERT ON users
+FOR EACH ROW 
+BEGIN
+ IF NEW.user_type = "Customer" THEN
+  INSERT INTO customers (user_id, default_address_id)
+     VALUES (NEW.user_id, NULL);
+    END IF;
+END//
+
+DELIMITER ;
+
 
 -- INSERTS
 

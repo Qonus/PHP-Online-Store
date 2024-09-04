@@ -12,16 +12,13 @@ class OrderController extends UserController
 
     public function checkout()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login/");
-            return;
-        }
+        UserController::checkAuth();
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // $payment_method = $_POST["payment_method"];
             // $address = $_POST["address"];
             $this->model->createOrder($_SESSION['user']['user_id']);
-            header("Location: /order/confirm");
+            header("Location: /checkout/confirm");
             return;
             // if ($order_id) {
             //     //$_SESSION['order'] = $this->model->getOrderById($order_id);
@@ -34,10 +31,8 @@ class OrderController extends UserController
 
     public function confirm()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login");
-            return;
-        }
+        UserController::checkAuth();
+
         // if (!isset($_SESSION['order'])) {
         //     header("Location: /checkout");
         //     return;
@@ -53,10 +48,8 @@ class OrderController extends UserController
 
     public function index()
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login");
-            return;
-        }
+        UserController::checkAuth();
+
         try {
             $orders = $this->model->getAllByUserIdOrders($_SESSION['user']['user_id']);
 
@@ -77,22 +70,19 @@ class OrderController extends UserController
 
     public function orderDetails($order_id)
     {
-        if (!isset($_SESSION['user'])) {
-            header("Location: /login");
-            return;
-        }
+        UserController::checkAuth();
+
         $order = $this->model->getOrderById($order_id);
         if ($_SESSION['user']['user_id'] != $order['customer_id']) {
-            $this->view->render('order/order_details', [
-                'title' => 'Order Details',
-                'error' => "Order with number $order_id not found in your order list",
-            ]);
+            header("Location: /profile/orders");
             return;
         }
+        $order_details = $this->model->getAllOrderDetails($order_id);
 
         $this->view->render('order/order_details', [
             'title' => 'Order Details',
             'order' => $order,
+            'order_details' => $order_details,
         ]);
     }
 }
