@@ -19,6 +19,14 @@ class View
         extract($data);
         include $this->viewPath . 'layouts/template.php';
     }
+
+    public function notFound()
+    {
+        header("HTTP/1.1 404 Not Found");
+        $this->render("layouts/not-found", [
+            'title' => "Not Found",
+        ]);
+    }
 }
 
 ?>

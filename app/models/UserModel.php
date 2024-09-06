@@ -55,6 +55,8 @@ class UserModel extends Model
         return $this->getUserById($userId);
     }
 
+
+    // CUSTOMER
     public function getCustomerById($id): ?array
     {
         $sql = "SELECT * FROM users JOIN customers ON users.user_id = customers.user_id WHERE users.user_id = ?";

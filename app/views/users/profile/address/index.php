@@ -1,3 +1,11 @@
+<h2>Default Address:</h2>
+<form method="post">
+    <select name="default_address">
+        <option value=""></option>
+    </select>
+    <input name="default_address" type="submit">Set Default Address</input>
+</form>
+
 <h2>Add Address:</h2>
 <form method="post">
     <input placeholder="Address name (home, work, ect)" name="address_label" type="text"><br>
@@ -8,7 +16,7 @@
     <input placeholder="Postal code" name="postal_code" type="text"><br>
     <input placeholder="Country" name="country" type="text"><br>
     <textarea name="address_comment" placeholder="Address comment"></textarea><br>
-    <button type="submit">Add Address</button>
+    <input name="add_address" type="submit">Add Address</input>
 </form>
 
 <?php if (isset($addresses)): ?>

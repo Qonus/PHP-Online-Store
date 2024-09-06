@@ -9,21 +9,19 @@ class UserController extends Controller
         parent::__construct();
         require_once __DIR__ . '/../views/users/profile/ProfileView.php';
         $this->profileView = new ProfileView;
-        require_once __DIR__ . '/../models/UserModel.php';
-        $this->model = new UserModel;
+        $this->model = parent::loadModel('UserModel');
     }
 
     static function checkAuth()
     {
-        require_once __DIR__ . '/../models/UserModel.php';
-        $model = new UserModel;
+        $userModel = parent::loadModel('UserModel');
         if (!isset($_SESSION["user"])) {
             header("HTTP/1.1 401 Unauthorized");
             header("Location: /login/");
             return;
         } else {
             $user = $_SESSION["user"];
-            $user = $model->getCustomerById($user["user_id"]);
+            $user = $userModel->getCustomerById($user["user_id"]);
             if (!$user) {
                 unset($_SESSION["user"]);
                 header("HTTP/1.1 401 Unauthorized");

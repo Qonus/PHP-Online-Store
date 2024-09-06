@@ -163,6 +163,13 @@ $route->add('/checkout/confirm', function () {
     $controller->confirm();
 });
 
+// ADMIN
+$route->add('/admin', function () {
+    loadController('AdminController');
+    $controller = new AdminController();
+    $controller->index();
+});
+
 
 // Получение URI
 $uri = $_SERVER['REQUEST_URI'];

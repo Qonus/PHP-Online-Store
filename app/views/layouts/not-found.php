@@ -1,3 +1,4 @@
 <h1>Admit it. You are lost, aren't you?</h1>
-<p>You see trying to find some kind of hidden page will result in failiure, you have to travel through website the intended way. I won't be around to save you every time you feel like getting lost. Just this once...</p>
-<a href="/">fall on your knees and beg for forgiveness hoping for that developer will notice your conundrum and give you one of his hand of help</a>
+<p>You see trying to find some kind of hidden page will result in failiure, you have to travel through website the
+    intended way.</p>
+<a href="/">Send me home</a>
