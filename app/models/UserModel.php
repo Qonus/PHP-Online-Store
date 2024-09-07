@@ -90,6 +90,18 @@ class UserModel extends Model
         return (array) $this->db->getAll($sql, [$id]) ?: null;
     }
 
+    public function updateCustomer($user_id, $data): ?array
+    {
+        foreach ($data as $key => $value) {
+            $args = [];
+            $args[":$key"] = $value;
+            $sql = "UPDATE customers SET $key = :$key WHERE user_id = :user_id";
+            $args[':user_id'] = $user_id;
+            $this->db->rowCount($sql, $args);
+        }
+        return $this->getCustomerById($user_id);
+    }
+
 
     // ADDRESS
     public function getAddressById($address_id)
@@ -97,6 +109,26 @@ class UserModel extends Model
         $sql = "SELECT * FROM addresses WHERE address_id = :address_id";
         $args = [
             ":address_id" => $address_id
+        ];
+        return (array) $this->db->getRow($sql, $args);
+    }
+
+    public function getDefaultAddressByCustomerId($customer_id)
+    {
+        $sql = "SELECT a.address_id, a.address_label FROM customers c JOIN addresses a ON a.address_id = c.default_address_id WHERE c.user_id = :customer_id";
+        $args = [
+            ":customer_id" => $customer_id
+        ];
+        $result = $this->db->getRow($sql, $args);
+        return (array) $result;
+    }
+
+    public function getAddressByAddressLabel($customer_id, $address_label)
+    {
+        $sql = "SELECT a.address_id, a.address_label FROM customers c JOIN addresses a ON a.customer_id = c.user_id WHERE c.user_id = :customer_id AND a.address_label = :address_label";
+        $args = [
+            ":customer_id" => $customer_id,
+            ":address_label" => $address_label,
         ];
         return (array) $this->db->getRow($sql, $args);
     }

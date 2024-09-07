@@ -1,9 +1,15 @@
 <h2>Default Address:</h2>
 <form method="post">
     <select name="default_address">
-        <option value=""></option>
+        <option <?= ($default_address != "") ? "" : "selected" ?>>None</option>
+        <?php foreach ($addresses as $item):
+            $item = (array) $item; ?>
+            <option <?= ($default_address == $item["address_label"]) ? "selected" : "" ?>>
+                <?= $item["address_label"] ?>
+            </option>
+        <?php endforeach; ?>
     </select>
-    <input name="default_address" type="submit">Set Default Address</input>
+    <input name="set_default_address" type="submit" value="Set Default Address" />
 </form>
 
 <h2>Add Address:</h2>
@@ -18,6 +24,17 @@
     <textarea name="address_comment" placeholder="Address comment"></textarea><br>
     <input name="add_address" type="submit">Add Address</input>
 </form>
+
+<?php if (isset($error)): ?>
+    <p class="error">
+        <?= $error ?>
+    </p>
+<?php endif;
+if (isset($message)): ?>
+    <p class="message">
+        <?= $message ?>
+    </p>
+<?php endif; ?>
 
 <?php if (isset($addresses)): ?>
 
