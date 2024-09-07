@@ -2,8 +2,7 @@
 }
 
 .profile-wrapper {
-  width: var(--wrapper-width);
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 20px;

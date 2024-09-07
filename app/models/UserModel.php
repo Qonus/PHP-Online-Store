@@ -38,14 +38,35 @@ class UserModel extends Model
         return $result;
     }
 
-    public function getAllUsers()
+    public function getAllUsers($roles = [])
     {
-        return (array) $this->db->getAll("SELECT * FROM users");
+        $sql = "SELECT * FROM users";
+        $args = [];
+        if (!empty($roles)) {
+            $sql .= " WHERE";
+        }
+        foreach ($roles as $role) {
+            if ($roles[0] != $role) {
+                $sql .= " OR";
+            }
+            $sql .= " user_type = :$role";
+            $args[":$role"] = $role;
+        }
+        return (array) $this->db->getAll($sql, $args);
     }
 
     public function updateUser($userId, $data): ?array
     {
         foreach ($data as $key => $value) {
+            if ($key == "email") {
+                $sql = "SELECT * FROM users WHERE email LIKE :email";
+                $args = [
+                    ":email" => $value,
+                ];
+                if ((array) $this->db->getRow($sql, $args) ?: null) {
+                    return null;
+                }
+            }
             $args = [];
             $args[":$key"] = $value;
             $sql = "UPDATE users SET $key = :$key WHERE user_id = :u";

@@ -170,6 +170,18 @@ $route->add('/admin', function () {
     $controller->index();
 });
 
+$route->add('/admin/users', function () {
+    loadController('AdminController');
+    $controller = new AdminController();
+    $controller->users();
+});
+
+$route->add('/admin/customers', function () {
+    loadController('AdminController');
+    $controller = new AdminController();
+    $controller->customers();
+});
+
 
 // Получение URI
 $uri = $_SERVER['REQUEST_URI'];

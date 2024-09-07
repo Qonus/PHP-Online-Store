@@ -146,7 +146,7 @@ class UserController extends Controller
                     $this->profileView->render('privacy', [
                         'title' => 'Privacy settings',
                         'email' => $_SESSION['user']['email'],
-                        'error' => 'Error, try again later',
+                        'error' => 'Error, email already exists',
                     ]);
                 }
                 return;

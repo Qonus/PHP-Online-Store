@@ -16,6 +16,11 @@
   list-style: none;
 }
 
+.page-wrapper {
+  width: var(--wrapper-width);
+  margin: 0 auto;
+}
+
 h1 {
   text-align: center;
 }

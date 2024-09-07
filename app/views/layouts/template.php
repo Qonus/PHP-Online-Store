@@ -19,7 +19,9 @@
 
 <body>
     <?php include __DIR__ . '/../elements/header.php'; ?>
-    <?= $content ?>
+    <div class="page-wrapper">
+        <?= $content ?>
+    </div>
     <?php include __DIR__ . '/../elements/footer.php'; ?>
     <script src="/js/app.js"></script>
 </body>
