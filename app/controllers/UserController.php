@@ -20,14 +20,15 @@ class UserController extends Controller
             header("Location: /login/");
             return;
         } else {
-            $user = $_SESSION["user"];
-            $user = $userModel->getCustomerById($user["user_id"]);
-            if (!$user) {
-                unset($_SESSION["user"]);
-                header("HTTP/1.1 401 Unauthorized");
-                header("Location: /login/");
-                return;
-            }
+            // $user = $_SESSION["user"];
+            // $user = $userModel->getCustomerById($user["user_id"]);
+            // if (!$user) {
+            //     unset($_SESSION["user"]);
+            //     header("HTTP/1.1 401 Unauthorized");
+            //     header("Location: /login/");
+            //     return;
+            // }
+            return;
         }
     }
 

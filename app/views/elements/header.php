@@ -15,6 +15,5 @@
                 <li><a href="/logout">logout</a></li>
             <?php endif; ?>
         </div>
-
     </div>
 </header>
