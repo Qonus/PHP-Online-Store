@@ -3,6 +3,7 @@
 class AdminController extends Controller
 {
     public $userModel;
+    public $productModel;
     private $user;
     private $role;
 
@@ -14,6 +15,7 @@ class AdminController extends Controller
             $this->user = $_SESSION["user"];
             $this->role = $this->userModel->getUserById($this->user['user_id'])['user_type'];
         }
+        $this->productModel = $this->loadModel('ProductModel');
     }
 
     private function checkRole($role = "")
@@ -58,6 +60,30 @@ class AdminController extends Controller
             "title" => "Customers panel",
             "users" => $customers,
             "role" => $this->role,
+        ]);
+    }
+
+    public function items()
+    {
+        $this->checkRole();
+
+        $items = $this->productModel->getAllProducts();
+
+        $this->view->render("admin/items", [
+            "title" => "Products panel",
+            "items" => $items,
+        ]);
+    }
+
+    public function item($product_id)
+    {
+        $this->checkRole();
+
+        $product = $this->productModel->getProductById($product_id);
+
+        $this->view->render("admin/items", [
+            "title" => "Products panel",
+            "product" => $product,
         ]);
     }
 }

@@ -188,6 +188,18 @@ $route->add('/admin/customers/{customer_id}/orders', function ($customer_id) {
     $controller->orders($customer_id);
 });
 
+$route->add('/admin/items', function () {
+    loadController('AdminController');
+    $controller = new AdminController();
+    $controller->items();
+});
+
+$route->add('/admin/items/{product_id}', function ($product_id) {
+    loadController('AdminController');
+    $controller = new AdminController();
+    $controller->item($product_id);
+});
+
 
 // Получение URI
 $uri = $_SERVER['REQUEST_URI'];
