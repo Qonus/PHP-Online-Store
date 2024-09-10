@@ -1,6 +1,6 @@
 <?php
 
-class OrderModel extends Model
+class OrderModel extends UserModel
 {
     protected $db;
     protected $table = "orders";

@@ -22,7 +22,7 @@
     <input placeholder="Postal code" name="postal_code" type="text"><br>
     <input placeholder="Country" name="country" type="text"><br>
     <textarea name="address_comment" placeholder="Address comment"></textarea><br>
-    <input name="add_address" type="submit">Add Address</input>
+    <input name="add_address" type="submit" value="Add Address" />
 </form>
 
 <?php if (isset($error)): ?>

@@ -12,8 +12,28 @@ class OrderController extends UserController
     public function checkout()
     {
         UserController::checkAuth();
+        $user = $_SESSION["user"];
+
+        $addresses = $this->model->getCustomerAddresses($user["user_id"]);
+        $default_address = $this->model->getDefaultAddressByCustomerId($user["user_id"]);
+        if (!$default_address) {
+            $default_address["address_id"] = null;
+            $default_address["address_label"] = "";
+        }
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $new_default_address = [];
+            if ($_POST["default_address"] == "None") {
+                $new_default_address["address_id"] = null;
+                $new_default_address["address_label"] = "";
+            } else {
+                $new_default_address = $this->model->getAddressByAddressLabel($user["user_id"], $_POST["default_address"]);
+            }
+            $data = [
+                "default_address_id" => $new_default_address["address_id"],
+            ];
+            $this->model->updateCustomer($user["user_id"], $data);
+
             // $payment_method = $_POST["payment_method"];
             // $address = $_POST["address"];
             $this->model->createOrder($_SESSION["user"]["user_id"]);
@@ -25,6 +45,8 @@ class OrderController extends UserController
         }
         $this->view->render("order/index", [
             "title" => "Checkout",
+            "addresses" => $addresses,
+            "default_address" => $default_address["address_label"],
         ]);
     }
 
