@@ -93,8 +93,6 @@ CREATE TABLE order_details (
     FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
-
-
 CREATE TABLE product_photos (
     photo_id INT AUTO_INCREMENT PRIMARY KEY,
     product_id INT NOT NULL,
@@ -211,8 +209,6 @@ VALUES
 ('Customer', 'John', 'Doe', 'johndoe@example.com', '0987654321', 'hashedpassword', 'somesalt'),
 ('Customer', 'Jane', 'Doe', 'janedoe@example.com', '1112223333', 'hashedpassword', 'somesalt'),
 ('Manager', 'James', 'Smith', 'jamessmith@example.com', '4445556666', 'hashedpassword', 'somesalt');
-
-INSERT INTO customers (user_id) VALUES (2), (3);
 
 INSERT INTO addresses (address_label, customer_id, address_line1, city, state, postal_code, country)
 VALUES 
