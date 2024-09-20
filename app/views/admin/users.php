@@ -6,7 +6,8 @@
         <th>Last Name</th>
         <th>Email</th>
         <th>Phone</th>
-        <th>Actions</th>
+        <th>Change User Type</th>
+        <th>Order Details</th>
     </tr>
     <?php foreach ($users as $item):
         $item = (array) $item; ?>
@@ -29,7 +30,10 @@
             <td>
                 <?= $item["phone"] ?>
             </td>
-            <td>Remove | Edit</td>
+            <td>Make <a href="/admin/users/Administrator/<?= $item["user_id"] ?>">Admin</a> | <a href="/admin/users/Manager/<?= $item["user_id"] ?>">Manager</a> | <a href="/admin/users/Customer/<?= $item["user_id"] ?>">Customer</a></td>
+            <?php if ($item["user_type"] == "Customer"): ?>
+            <td><a href="/admin/customers/<?= $item["user_id"] ?>/orders">Details</a></td>
+            <?php endif; ?>
         </tr>
     <?php endforeach; ?>
 </table>

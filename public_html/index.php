@@ -151,6 +151,12 @@ $route->add('/profile/orders/{order}', function ($order) {
     $controller->orderDetails($order);
 });
 
+$route->add('/profile/orders/cancel/{order_id}', function ($order_id) {
+    loadController('OrderController');
+    $controller = new OrderController();
+    $controller->cancel($order_id);
+});
+
 $route->add('/checkout', function () {
     loadController('OrderController');
     $controller = new OrderController();
@@ -174,6 +180,12 @@ $route->add('/admin/users', function () {
     loadController('AdminController');
     $controller = new AdminController();
     $controller->users();
+});
+
+$route->add('/admin/users/{user_type}/{user_id}', function ($user_type, $user_id) {
+    loadController('AdminController');
+    $controller = new AdminController();
+    $controller->user_type($user_type, $user_id);
 });
 
 $route->add('/admin/customers', function () {

@@ -50,6 +50,21 @@ class AdminController extends Controller
         ]);
     }
 
+    public function user_type($user_type, $user_id)
+    {
+        $this->checkRole("Administrator");
+
+        $allowedTypes = ["Administrator", "Customer", "Manager"];
+        if (!in_array($user_type, $allowedTypes)) {
+            header("Location: /admin/users");
+            return;
+        }
+
+        $result = $this->userModel->updateUser($user_id, ['user_type' => $user_type]);
+        header("Location: /admin/users");
+    }
+
+
     public function customers()
     {
         $this->checkRole();
@@ -108,8 +123,8 @@ class AdminController extends Controller
 
         $product = $this->productModel->getProductById($product_id);
 
-        $this->view->render("admin/items", [
-            "title" => "Products panel",
+        $this->view->render("admin/item", [
+            "title" => "Product panel",
             "product" => $product,
         ]);
     }

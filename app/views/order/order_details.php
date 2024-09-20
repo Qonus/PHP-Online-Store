@@ -41,4 +41,6 @@
         <?php endforeach; ?>
     </table>
 
+    <a class="card" href="/profile/orders/cancel/<?= $order["order_id"] ?>">Cancel Order</a>
+
 <?php endif; ?>

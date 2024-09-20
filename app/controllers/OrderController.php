@@ -120,4 +120,21 @@ class OrderController extends UserController
             "order_details" => $order_details,
         ]);
     }
+
+    public function cancel($order_id) {
+        UserController::checkAuth();
+    
+        $user = $_SESSION["user"];
+        
+        $order = $this->model->getOrderById($order_id);
+        
+        if (!$order || ($order["customer_id"] != $user["user_id"] && $user["user_type"] != "Manager" && $user["user_type"] != "Administrator")) {
+            $this->view->notFound();
+            exit();
+        }
+    
+        $deleted = $this->model->deleteOrder($order_id);
+        header("Location: /profile");
+    }
+    
 }

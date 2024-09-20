@@ -48,8 +48,19 @@ class OrderModel extends UserModel
         return 1;
     }
 
+    public function deleteOrderDetails($order_id)
+    {
+        $sql = "DELETE FROM order_details WHERE order_id = :order_id";
+        $args = [
+            ":order_id" => $order_id
+        ];
+        return $this->db->rowCount($sql, $args);
+    }
+
     public function deleteOrder($order_id)
     {
+        $this->deleteOrderDetails($order_id);
+
         $sql = "DELETE FROM orders WHERE order_id = :order_id";
         $args = [
             ":order_id" => $order_id
