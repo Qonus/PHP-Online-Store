@@ -29,8 +29,8 @@ class ProductModel extends Model {
         return (array)$this->db->getAll("SELECT * FROM products");
     }
 
-    public function createProduct($data) {
-        $sql = "INSERT INTO products (name, description, price, stock) VALUES (:name, :description, :price, :stock)";
+    public function addProduct($data) {
+        $sql = "INSERT INTO products (product_name, description, price, stock_quantity, brand_id, category_id, age_range, player_number, weight, dimensions, release_date) VALUES (:product_name, :description, :price, :stock_quantity, :brand_id, :category_id, :age_range, :player_number, :weight, :dimensions, :release_date)";
         return $this->db->insert($sql, $data);
     }
 

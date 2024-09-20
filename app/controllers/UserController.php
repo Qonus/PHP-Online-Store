@@ -181,8 +181,9 @@ class UserController extends Controller
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST["add_address"])) {
                 $data = [
-                    ":customer_id" => $user["user_id"],
                     ":address_label" => $_POST["address_label"],
+                    ":customer_id" => $user["user_id"],
+                    ":address_line1" => $_POST["address_line1"],
                     ":address_line2" => $_POST["address_line2"],
                     ":city" => $_POST["city"],
                     ":state" => $_POST["state"],
@@ -191,6 +192,7 @@ class UserController extends Controller
                     ":address_comment" => $_POST["address_comment"],
                 ];
                 $new_address = $this->model->addAddress($data);
+                $page_params["addresses"] = $this->model->getCustomerAddresses($user["user_id"]);
                 if ($new_address) {
                     $page_params["message"] = "Success, new address added.";
                 } else {
