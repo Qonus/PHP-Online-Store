@@ -147,10 +147,6 @@ BEGIN
     RETURN total;
 END //
 
-DELIMITER ;
-
-DELIMITER //
-
 CREATE PROCEDURE create_order(IN id INT)
 BEGIN
  DECLARE order_id INT;
@@ -184,10 +180,6 @@ BEGIN
     COMMIT;
 END //
 
-DELIMITER ;
-
-DELIMITER //
-
 CREATE TRIGGER create_customer
 AFTER INSERT ON users
 FOR EACH ROW 
@@ -197,6 +189,26 @@ BEGIN
      VALUES (NEW.user_id, NULL);
     END IF;
 END//
+
+
+CREATE TRIGGER before_user_insert
+BEFORE INSERT on users
+FOR EACH ROW
+BEGIN
+ DECLARE salt VARCHAR(32);
+    SET salt = MD5(FLOOR(RAND() * 1000000000));
+    SET NEW.salt = salt;
+    SET NEW.password = SHA1(CONCAT(SHA1(NEW.password), salt));
+END //
+
+CREATE TRIGGER before_user_update
+BEFORE UPDATE on users
+FOR EACH ROW
+BEGIN
+ DECLARE salt VARCHAR(32);
+    SET NEW.salt = OLD.salt;
+    SET NEW.password = SHA1(CONCAT(SHA1(NEW.password), OLD.salt));
+END //
 
 DELIMITER ;
 

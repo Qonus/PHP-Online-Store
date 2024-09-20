@@ -16,10 +16,13 @@ class UserModel extends Model
 
     public function authUser($email, $password): ?array
     {
+        $sql = "SELECT salt FROM users WHERE email LIKE ?";
+        $salt = (array)$this->db->getRow($sql, [$email]);
+
         $sql = "SELECT * FROM users WHERE email LIKE :email AND password = :password";
         $args = [
             ":email" => $email,
-            ":password" => $password
+            ":password" => SHA1(SHA1($password) . $salt["salt"])
         ];
         return (array) $this->db->getRow($sql, $args) ?: null;
     }
