@@ -1,4 +1,7 @@
 <form method="post">
+    <input type="text" name="brand_id" placeholder="Brand" />
+    <input type="text" name="category_id" placeholder="Category" />
+    <input type="date" name="release_date" placeholder="Release Date" />
     <input type="text" name="product_name" placeholder="Name" />
     <input type="text" name="description" placeholder="Description" />
     <input type="text" name="age_range" placeholder="Age Range" />

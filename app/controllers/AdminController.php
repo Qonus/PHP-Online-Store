@@ -69,10 +69,37 @@ class AdminController extends Controller
 
         $items = $this->productModel->getAllProducts();
 
-        $this->view->render("admin/items", [
-            "title" => "Products panel",
-            "items" => $items,
-        ]);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $data = [
+                ":product_name" => $_POST["product_name"],
+                ":description" => $_POST["description"],
+                ":price" => $_POST["price"],
+                ":stock_quantity" => $_POST["stock_quantity"],
+                ":brand_id" => $_POST["brand_id"],
+                ":category_id" => $_POST["category_id"],
+                ":age_range" => $_POST["age_range"],
+                ":player_number" => $_POST["player_number"],
+                ":weight" => $_POST["weight"],
+                ":dimensions" => $_POST["dimensions"],
+                ":release_date" => $_POST["release_date"],
+            ];
+
+            $new_product = $this->productModel->addProduct($data);
+
+            if ($new_product) {
+                $this->view->render("admin/items", [
+                    "title" => "Products panel",
+                    "message" => "Success! New product added.",
+                    "items" => $this->productModel->getAllProducts(),
+                ]);
+            } else {
+                $this->view->render("admin/items", [
+                    "title" => "Products panel",
+                    "error" => "Error adding product. Please try again.",
+                    "items" => $items,
+                ]);
+            }
+        }
     }
 
     public function item($product_id)
